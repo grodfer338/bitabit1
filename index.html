@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Primeros pasos con la placa EchidnaBlack2 y EchidnaML: proyectos con bloques e inteligencia artificial para el aula.">
+<title>Echidna a fondo · IES Sol de Portocarrero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef2f0; --surface:#ffffff; --ink:#14221f; --muted:#4b5f5a;
+  --pcb:#0f3d3a; --pcb-ink:#e9f4f1; --spine:#f2c230; --line:#c9d6d2; --link:#0b5a53;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1715; --surface:#13231f; --ink:#e6f0ed; --muted:#9bb2ab;
+    --pcb:#06201e; --pcb-ink:#e9f4f1; --line:#27403a; --link:#7fd6c8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1715; --surface:#13231f; --ink:#e6f0ed; --muted:#9bb2ab;
+  --pcb:#06201e; --pcb-ink:#e9f4f1; --line:#27403a; --link:#7fd6c8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 "Atkinson Hyperlegible",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.1;margin:0}
+a{color:var(--link)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--spine);outline-offset:2px}
+.wrap{max-width:62rem;margin:0 auto;padding:0 1.25rem}
+.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--spine);color:#000;padding:.5rem 1rem;z-index:20}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--pcb);color:var(--pcb-ink)}
+header.top .wrap{display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:.7rem;padding-bottom:.7rem}
+.brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--pcb-ink);text-decoration:none}
+nav a{color:var(--pcb-ink);text-decoration:none;margin-right:1rem;font-size:.95rem}
+nav a:hover{text-decoration:underline;text-decoration-color:var(--spine);text-underline-offset:4px}
+.hero{background:var(--pcb);color:var(--pcb-ink);padding:3.5rem 0 0;overflow:hidden}
+.hero .wrap{display:grid;gap:2rem;grid-template-columns:1.2fr 1fr;align-items:center}
+.hero h1{font-size:clamp(2.3rem,6vw,4.2rem);font-weight:800;letter-spacing:-.02em}
+.hero p{max-width:34rem;font-size:1.15rem;color:#cfe3de}
+.btns{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.5rem}
+.btn{display:inline-block;padding:.7rem 1.2rem;border-radius:.4rem;font-weight:700;text-decoration:none}
+.btn.main{background:var(--spine);color:#1a1500}
+.btn.alt{border:2px solid var(--pcb-ink);color:var(--pcb-ink)}
+.board{background:#fff;border-radius:.6rem;padding:.6rem;min-height:9rem;display:flex;align-items:center;justify-content:center}
+.board img{max-width:100%;height:auto;display:block;border-radius:.3rem}
+.board figcaption{font-size:.8rem;color:#445}
+.spines{display:block;width:100%;height:46px;margin-top:2.5rem}
+section{padding:3.5rem 0}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:1rem}
+.lead{max-width:44rem;color:var(--muted)}
+.two{display:grid;gap:1.5rem;grid-template-columns:1fr 1fr;margin-top:1.5rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--spine);padding:1.3rem 1.4rem;border-radius:.3rem}
+.panel h3{font-size:1.35rem;margin-bottom:.4rem}
+.panel p{margin:.3rem 0;color:var(--muted)}
+.tools{display:grid;gap:1.5rem;grid-template-columns:1fr 1fr;margin-top:1.5rem}
+.search{margin:1.5rem 0 1rem}
+.search input{width:100%;max-width:26rem;padding:.7rem .9rem;border:2px solid var(--line);border-radius:.4rem;background:var(--surface);color:var(--ink);font:inherit}
+.list{list-style:none;padding:0;margin:0;display:grid;gap:.6rem;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr))}
+.list li{margin:0}
+.list a{display:flex;gap:.8rem;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:.3rem;padding:.8rem 1rem;text-decoration:none;color:var(--ink);font-weight:700}
+.list a:hover{border-color:var(--link)}
+.n{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;color:var(--pcb);background:var(--spine);min-width:2.6rem;text-align:center;border-radius:.25rem;padding:.1rem .3rem;font-size:.9rem}
+.ia .n{background:var(--pcb);color:var(--pcb-ink)}
+#vacio{display:none;color:var(--muted)}
+.links{display:grid;gap:.6rem;padding:0;list-style:none}
+.steps{max-width:44rem;color:var(--muted)}.steps li{margin:.3rem 0}
+.note{background:var(--surface);border:1px dashed var(--line);padding:1rem 1.3rem;border-radius:.3rem;color:var(--muted)}
+footer{background:var(--pcb);color:#cfe3de;padding:2.5rem 0 3rem;font-size:.92rem}
+footer a{color:var(--spine)}
+@media (max-width:760px){.hero .wrap,.two,.tools{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.hero h1{animation:in .6s ease both}@keyframes in{from{opacity:0;transform:translateY(8px)}}}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Echidna a fondo</a>
+    <nav aria-label="Principal">
+      <a href="#que-es">Qué es</a>
+      <a href="#placa">Placa</a>
+      <a href="#empezar">Empezar</a>
+      <a href="#bloques">Bloques</a>
+      <a href="#ia">IA</a>
+      <a href="#recursos">Recursos</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+<div class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <h1>Programa, mide y deja que la placa aprenda.</h1>
+      <p>Guía para empezar con la placa EchidnaBlack2 y el entorno EchidnaML: once proyectos con bloques y tres con inteligencia artificial, pensados para quien da sus primeros pasos.</p>
+      <div class="btns">
+        <a class="btn main" href="#bloques">Ver los proyectos</a>
+        <a class="btn alt" href="https://echidna.es/GuiaInicioEchidnaML/">Guía original</a>
+      </div>
+    </div>
+    <figure class="board" style="margin:0">
+      <img src="https://echidna.es/GuiaInicioEchidnaML/assets/images/EchidnaBlack_2_perspectiva.jpg" alt="Placa EchidnaBlack2 vista en perspectiva" onerror="this.parentNode.style.display='none'">
+    </figure>
+  </div>
+  <svg class="spines" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#eef2f0" class="sp" d="M0 46 L0 30 L30 0 L60 30 L90 0 L120 30 L150 0 L180 30 L210 0 L240 30 L270 0 L300 30 L330 0 L360 30 L390 0 L420 30 L450 0 L480 30 L510 0 L540 30 L570 0 L600 30 L630 0 L660 30 L690 0 L720 30 L750 0 L780 30 L810 0 L840 30 L870 0 L900 30 L930 0 L960 30 L990 0 L1020 30 L1050 0 L1080 30 L1110 0 L1140 30 L1170 0 L1200 30 L1200 46Z"/>
+  </svg>
+</div>
+
+<section id="que-es">
+  <div class="wrap">
+    <h2>Una placa y un entorno hechos para funcionar juntos</h2>
+    <p class="lead"><strong>EchidnaBlack2</strong> es el hardware y <strong>EchidnaML</strong> el software. Juntos forman un sistema integrado para aprender programación, robótica e inteligencia artificial, y trabajar el pensamiento computacional desde Primaria hasta Bachillerato y F.P.</p>
+    <div class="two">
+      <div class="panel">
+        <h3>EchidnaBlocks</h3>
+        <p>El entorno de programación por bloques, basado en Scratch, con el que se programa la placa.</p>
+      </div>
+      <div class="panel">
+        <h3>LearningML</h3>
+        <p>La herramienta para crear modelos de machine learning que clasifican textos, imágenes y números, y después se usan en los programas.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:1.5rem">No hace falta saber programar antes. Si ya conoces Scratch, te resultará más fácil.</p>
+  </div>
+</section>
+
+<section id="placa" style="background:var(--surface)">
+  <div class="wrap">
+    <h2>La placa EchidnaBlack2</h2>
+    <p class="lead">Reúne en una sola placa joystick, LED, pulsadores y conectores, de modo que se puede empezar a programar sin montar circuitos.</p>
+    <div class="two">
+      <div class="panel">
+        <h3>Entradas MkMk</h3>
+        <p>La placa tiene 8 entradas MkMk: A0, A1, A2, A3, A6, A7, D2 y D3.</p>
+        <p>Según el manual, este modo permite crear proyectos que unen el mundo físico más cercano con el virtual.</p>
+      </div>
+      <div class="panel">
+        <h3>Programa y plataformas</h3>
+        <p>EchidnaML es gratuito, funciona sin conexión y existe para GNU/Linux, Windows y macOS.</p>
+        <p>Al abrirlo eliges entre EchidnaBlocks (Scratch con la placa) y LearningML (modelos de IA).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="empezar">
+  <div class="wrap">
+    <h2>Antes de empezar</h2>
+    <div class="two">
+      <div class="panel">
+        <h3>Qué necesitas</h3>
+        <p>La placa EchidnaBlack2, un cable USB-C y un ordenador con EchidnaML instalado (en Windows, un ordenador de 64 bits con Windows 10 u 11).</p>
+        <p>Descarga el programa en <a href="https://echidna.es/a-programar/echidnaml/">echidna.es</a>.</p>
+      </div>
+      <div class="panel">
+        <h3>Primera conexión</h3>
+        <p>Conecta la placa, abre EchidnaML y comprueba que aparece «Placa conectada». Después monta un programa corto y pulsa la bandera verde.</p>
+        <p>Si Windows avisa de que protegió tu PC, la aplicación no está firmada por una gran empresa: descárgala siempre de la web oficial.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:1.5rem">Estos datos de instalación proceden del manual oficial y de una entrada del blog de <a href="https://montesteam.org/echidna-black-2/">MontesSTEAM</a> (IES Monterroso). Revísalos con la versión de EchidnaML que tengas en el aula.</p>
+  </div>
+</section>
+
+<section id="bloques" style="background:var(--surface)">
+  <div class="wrap">
+    <h2>Proyectos con EchidnaBlocks</h2>
+    <p class="lead">Cada proyecto presenta un componente nuevo de la placa y cómo programarlo. Conviene seguirlos en orden. Cada laboratorio tiene su propia página con instrucciones, comprobaciones, propuestas de ampliación y una actividad de entrega.</p>
+    <div class="search">
+      <label for="q" style="display:block;font-weight:700;margin-bottom:.3rem">Buscar un proyecto</label>
+      <input id="q" type="search" placeholder="Por ejemplo: semáforo" autocomplete="off">
+    </div>
+    <ol class="list" id="lista" style="padding:0">
+      <li><a href="lab-hola-mundo.html"><span class="n">2.1</span>Hola Mundo</a></li>
+      <li><a href="lab-semaforo.html"><span class="n">2.2</span>Semáforo</a></li>
+      <li><a href="lab-interruptor-de-luz.html"><span class="n">2.3</span>Interruptor de luz</a></li>
+      <li><a href="lab-timbre.html"><span class="n">2.4</span>Timbre</a></li>
+      <li><a href="lab-interruptor-crepuscular.html"><span class="n">2.5</span>Interruptor crepuscular</a></li>
+      <li><a href="lab-piano-de-frutas.html"><span class="n">2.6</span>Piano de frutas</a></li>
+      <li><a href="lab-el-echidna-dice-la-temperatura.html"><span class="n">2.7</span>El echidna dice la temperatura</a></li>
+      <li><a href="lab-termometro-de-colores.html"><span class="n">2.8</span>Termómetro de colores</a></li>
+      <li><a href="lab-vumetro.html"><span class="n">2.9</span>Vúmetro</a></li>
+      <li><a href="lab-telesketch.html"><span class="n">2.10</span>Telesketch</a></li>
+      <li><a href="lab-movemos-el-echidna.html"><span class="n">2.11</span>Movemos el echidna</a></li>
+    </ol>
+    <p id="vacio" role="status">Ningún proyecto coincide con tu búsqueda.</p>
+  </div>
+</section>
+
+<section id="ia">
+  <div class="wrap">
+    <h2>Proyectos con inteligencia artificial</h2>
+    <p class="lead">Aquí se crean modelos con LearningML que clasifican textos, imágenes y números, y se conectan con la placa. Entra en cada laboratorio para seguir la práctica desde esta web.</p>
+    <ol class="steps" style="margin:1.5rem 0">
+      <li><strong>Entrenar:</strong> creas las clases e introduces los ejemplos.</li>
+      <li><strong>Aprender:</strong> creas el modelo.</li>
+      <li><strong>Probar:</strong> compruebas que clasifica bien; si no, vuelves a entrenar.</li>
+      <li><strong>Programar:</strong> abres EchidnaBlocks y usas los bloques de LearningML en tu aplicación.</li>
+    </ol>
+    <ul class="list ia" style="padding:0;margin-top:1.5rem">
+      <li><a href="lab-asistente-virtual.html"><span class="n">3.1</span>Asistente virtual</a></li>
+      <li><a href="lab-clasificador-de-residuos.html"><span class="n">3.2</span>Clasificador de residuos</a></li>
+      <li><a href="lab-mando-de-inclinacion.html"><span class="n">3.3</span>Mando de inclinación</a></li>
+    </ul>
+  </div>
+</section>
+
+<section id="recursos" style="background:var(--surface)">
+  <div class="wrap">
+    <h2>Recursos oficiales</h2>
+    <ul class="links">
+      <li><a href="https://echidna.es/GuiaInicioEchidnaML/01-introduccion/">Introducción de la guía</a>: qué son EchidnaBlack2 y EchidnaML y cómo es el entorno.</li>
+      <li><a href="https://echidna.es/GuiaInicioEchidnaML/proyectos-inicio-echidnaml.pdf">Guía completa en PDF</a></li>
+      <li><a href="https://echidnaeducacion.github.io/manual/">Manual de EchidnaML y EchidnaBlack</a></li>
+      <li><a href="https://echidna.es/">echidna.es</a>, la web del proyecto.</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Echidna a fondo</strong>, hecha en el IES Sol de Portocarrero (Almería) a partir de la guía «Proyectos de inicio con EchidnaML» de Echidna Educación.</p>
+    <p>El contenido de la guía original se publica bajo licencia <a href="https://echidna.es/GuiaInicioEchidnaML/04-licencia/">Creative Commons BY-SA 4.0</a>; esta página lo resume y enlaza a la fuente. Echidna, EchidnaBlack2, EchidnaML y LearningML pertenecen a sus autores. Datos de la placa y de LearningML tomados del manual oficial de Echidna Educación. Enlaces revisados el 5 de noviembre de 2026.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var q=document.getElementById('q'),items=document.querySelectorAll('#lista li'),v=document.getElementById('vacio');
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+  q.addEventListener('input',function(){
+    var t=norm(q.value.trim()),n=0;
+    items.forEach(function(li){
+      var ok=norm(li.textContent).indexOf(t)>-1;
+      li.style.display=ok?'':'none';if(ok)n++;
+    });
+    v.style.display=n?'none':'block';
+  });
+})();
+</script>
+</body>
+</html>

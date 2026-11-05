@@ -1,0 +1,9 @@
+LABORATORIOS ECHIDNA BLACK — IES SOL DE PORTOCARRERO
+
+Contiene echidna-black.html y 14 páginas de laboratorio independientes.
+
+PUBLICACIÓN: sube todos los archivos HTML a la misma carpeta de tu repositorio GitHub Pages. Si usas la ruta bitabit/ en GitHub, coloca los archivos donde esté la página echidna-black.html actual, o adapta los enlaces si prefieres una subcarpeta.
+
+Abre echidna-black.html para entrar al índice. Las páginas son estáticas, no requieren servidor ni instalación adicional para mostrar su contenido. Para programar la placa necesitas EchidnaML.
+
+Las fichas son una adaptación didáctica original y resumida de la guía de Echidna Educación, con atribución y licencia CC BY-SA 4.0. No incluyen capturas de bloques oficiales. Revisa en el aula el programa y la conexión de servos antes de usar el laboratorio 3.2.
